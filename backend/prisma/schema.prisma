@@ -1,0 +1,263 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Machine {
+  id                       String               @id
+  name                     String
+  line                     String
+  type                     String
+  status                   String
+  utilization              Float
+  healthScore              Float
+  temperature              Float
+  vibration                Float
+  vibrationThreshold       Float
+  energy                   Float
+  currentOperationId       String?
+  currentOrderId           String?
+  activeWorkOrderId        String?
+  uptimeHours              Float
+  downtimeHours            Float
+  lastMaintenance          String
+  nextScheduledMaintenance String
+  criticalIssue            String?
+  telemetryHistory         MachineTelemetry[]
+  operations               Operation[]
+  workOrders               MaintenanceWorkOrder[]
+  qualityInspections       QualityInspection[]
+}
+
+model MachineTelemetry {
+  id          Int      @id @default(autoincrement())
+  machineId   String
+  machine     Machine  @relation(fields: [machineId], references: [id], onDelete: Cascade)
+  timestamp   String
+  temperature Float
+  vibration   Float
+  energy      Float
+  rpm         Float
+}
+
+model Order {
+  id                 String      @id
+  customer           String
+  product            String
+  quantity           Int
+  valueUsd           Float
+  orderDate          String
+  dueDate            String
+  status             String
+  materialReadiness  String
+  machineReadiness   String
+  deliveryRisk       String
+  riskReasons        String      // JSON array of strings
+  currentOperationId String?
+  penaltyPerDayUsd   Float
+  operations         Operation[]
+}
+
+model Operation {
+  id                   String  @id
+  name                 String
+  orderId              String
+  order                Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  machineId            String
+  machine              Machine @relation(fields: [machineId], references: [id])
+  alternativeMachineId String?
+  line                 String
+  durationHours        Float
+  scheduledStart       String
+  scheduledEnd         String
+  actualStart          String?
+  status               String
+  progressPct          Float
+  delayHours           Float
+  delayReason          String?
+  requiredSkill        String
+}
+
+model Employee {
+  id                  String                 @id
+  name                String
+  role                String
+  skills              String                 // JSON array of strings
+  shift               String
+  availability        String
+  workloadPct         Float
+  assignedLine        String
+  hoursWorkedThisWeek Float
+  currentTaskId       String?
+  avatarInitials      String
+  workOrders          MaintenanceWorkOrder[]
+}
+
+model InventoryItem {
+  id               String                 @id
+  name             String
+  category         String
+  unit             String
+  onHand           Float
+  reserved         Float
+  available        Float
+  reorderPoint     Float
+  leadTimeDays     Int
+  unitCostUsd      Float
+  daysOfCover      Float
+  stockoutRisk     String
+  storageLocation  String
+  relatedMachineId String?
+  description      String
+  transactions     InventoryTransaction[]
+  purchaseOrders   PurchaseOrder[]
+  workOrderParts   WorkOrderSparePart[]
+}
+
+model InventoryTransaction {
+  id            String        @id
+  timestamp     String
+  itemId        String
+  item          InventoryItem @relation(fields: [itemId], references: [id])
+  itemName      String
+  type          String
+  quantity      Float
+  referenceType String
+  referenceId   String
+  performedBy   String
+  notes         String
+}
+
+model PurchaseOrder {
+  id               String        @id
+  supplier         String
+  itemId           String
+  item             InventoryItem @relation(fields: [itemId], references: [id])
+  itemName         String
+  quantity         Float
+  unitPriceUsd     Float
+  totalPriceUsd    Float
+  orderDate        String
+  expectedDelivery String
+  status           String
+  risk             String
+  riskNotes        String?
+}
+
+model MaintenanceWorkOrder {
+  id                     String               @id
+  machineId              String
+  machine                Machine              @relation(fields: [machineId], references: [id])
+  machineName            String
+  issue                  String
+  priority               String
+  type                   String
+  technicianId           String?
+  technician             Employee?            @relation(fields: [technicianId], references: [id])
+  technicianName         String?
+  requiredSkill          String
+  sparePartsChecked      Boolean
+  status                 String
+  created                String
+  dueDate                String
+  estimatedDurationHours Float
+  actualDurationHours    Float?
+  notes                  String
+  spareParts             WorkOrderSparePart[]
+}
+
+model WorkOrderSparePart {
+  id          Int                  @id @default(autoincrement())
+  workOrderId String
+  workOrder   MaintenanceWorkOrder @relation(fields: [workOrderId], references: [id], onDelete: Cascade)
+  sparePartId String
+  sparePart   InventoryItem        @relation(fields: [sparePartId], references: [id])
+}
+
+model QualityInspection {
+  id                 String  @id
+  timestamp          String
+  machineId          String
+  machine            Machine @relation(fields: [machineId], references: [id])
+  machineName        String
+  line               String
+  batchId            String
+  productId          String
+  productName        String
+  inspectedUnits     Int
+  defectUnits        Int
+  defectRatePpm      Float
+  spcSignal          String
+  status             String
+  defectsJson        String  // JSON array: [{ type, count }]
+  correctiveActionId String?
+}
+
+model Alert {
+  id                String  @id
+  priority          String
+  issue             String
+  impact            String
+  owner             String
+  recommendedAction String
+  status            String
+  timestamp         String
+  relatedModule     String
+  targetId          String?
+}
+
+model DecisionRecommendation {
+  id                String  @id
+  title             String
+  priority          String
+  targetEntity      String
+  category          String
+  what              String
+  why               String
+  evidence          String
+  method            String
+  recommendedAction String
+  estimatedImpact   String
+  status            String
+  actionType        String
+  actionPayloadJson String?
+}
+
+model WhatIfScenario {
+  id                   String @id
+  title                String
+  description          String
+  type                 String
+  parametersJson       String
+  currentMetricsJson   String
+  simulatedMetricsJson String
+  impactChainJson      String
+  consequencesJson     String
+}
+
+model AppUser {
+  id          String @id
+  name        String
+  email       String @unique
+  role        String
+  title       String
+  initials    String
+  department  String
+  avatarBg    String
+  description String
+}
+
+model SystemState {
+  id                   String @id @default("singleton")
+  committedPlanVersion Int    @default(1)
+  plantShift           String @default("Shift A (06:00 - 14:00)")
+  plantTime            String @default("13:42:15")
+  lastUpdated          String @default("Simulated Telemetry Stream")
+  demoStep             Int    @default(1)
+  selectedMachineId    String @default("M-004")
+  selectedOrderId      String @default("ORDER-1042")
+}

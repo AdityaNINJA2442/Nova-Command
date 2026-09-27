@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Activity,
   AlertTriangle,
   Clock,
   RotateCcw,
@@ -43,6 +42,8 @@ export const Header: React.FC<HeaderProps> = ({
     plantShift,
     resetAllData,
     currentUser,
+    isBackendConnected,
+    backendError,
   } = useManufacturingStore();
 
   const { isDark, toggleTheme } = useTheme();
@@ -87,9 +88,11 @@ export const Header: React.FC<HeaderProps> = ({
             <Menu className="h-5 w-5" />
           </button>
 
-          <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center shadow-md border border-blue-400/30 shrink-0">
-            <Activity className="h-5 w-5 text-white" />
-          </div>
+          <img
+            src="/nova-command-logo.png"
+            alt="NOVA COMMAND Logo"
+            className="h-10 w-10 sm:h-11 sm:w-11 object-contain shrink-0"
+          />
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-base font-bold tracking-tight flex items-center gap-1.5" style={{ color: 'var(--text-primary)' }}>
@@ -149,6 +152,17 @@ export const Header: React.FC<HeaderProps> = ({
             />
             <span className="font-semibold text-[11px]" style={{ color: 'var(--text-primary)' }}>
               {hasMachineWarning ? 'Line 2 Advisory' : 'All Lines Nominal'}
+            </span>
+            <span style={{ color: 'var(--border)' }}>·</span>
+            <span
+              className={`text-[10px] font-bold px-1.5 py-0.5 rounded border ${
+                isBackendConnected
+                  ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
+                  : 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/30'
+              }`}
+              title={isBackendConnected ? 'Connected to live SQLite backend API' : backendError || 'Backend disconnected'}
+            >
+              {isBackendConnected ? 'DB LIVE' : 'DB OFFLINE'}
             </span>
             <span style={{ color: 'var(--border)' }}>·</span>
             <span className="font-mono text-[11px]" style={{ color: 'var(--text-secondary)' }}>{currentTime}</span>

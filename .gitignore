@@ -6,3 +6,13 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Local SQLite databases
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+
+# Local comparison files
+github_tree.txt
+local_tree.txt
