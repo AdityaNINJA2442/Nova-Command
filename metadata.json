@@ -1,0 +1,8 @@
+{
+  "name": "NOVA COMMAND",
+  "description": "AI-Powered Manufacturing Operations Command Center. Connect machines, people, materials and orders — and see the consequences before you act.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

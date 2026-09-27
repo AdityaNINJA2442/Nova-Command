@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+:root {
+  /* LIGHT MODE (High Contrast WCAG AA/AAA) */
+  --background: #F8FAFC;
+  --surface: #FFFFFF;
+  --surface-secondary: #F1F5F9;
+  --card: #FFFFFF;
+  --sidebar: #FFFFFF;
+  --header: #FFFFFF;
+  --border: #CBD5E1;
+  --border-subtle: #E2E8F0;
+  --text-primary: #0F172A;
+  --text-secondary: #334155;
+  --text-muted: #64748B;
+  --accent: #1D4ED8;
+  --accent-secondary: #4F46E5;
+  --success: #15803D;
+  --success-bg: #DCFCE7;
+  --success-text: #14532D;
+  --warning: #B45309;
+  --warning-bg: #FEF3C7;
+  --warning-text: #78350F;
+  --critical: #B91C1C;
+  --critical-bg: #FEE2E2;
+  --critical-text: #7F1D1D;
+  --info: #0369A1;
+  --info-bg: #E0F2FE;
+  --info-text: #0C4A6E;
+  --chart-grid: #CBD5E1;
+  --chart-text: #334155;
+  --input-bg: #FFFFFF;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.06);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+  --glass-bg: rgba(255, 255, 255, 0.95);
+  --scroll-track: #F1F5F9;
+  --scroll-thumb: #94A3B8;
+  --scroll-thumb-hover: #64748B;
+}
+
+:root[data-theme="dark"],
+.dark {
+  /* DARK MODE */
+  --background: #070B12;
+  --surface: #0D131D;
+  --surface-secondary: #111927;
+  --card: #141D2A;
+  --sidebar: #0A1019;
+  --header: #0A1019;
+  --border: #243044;
+  --border-subtle: #192434;
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --accent: #38BDF8;
+  --accent-secondary: #818CF8;
+  --success: #22C55E;
+  --success-bg: rgba(34, 197, 94, 0.15);
+  --success-text: #4ADE80;
+  --warning: #F59E0B;
+  --warning-bg: rgba(245, 158, 11, 0.15);
+  --warning-text: #FBBF24;
+  --critical: #EF4444;
+  --critical-bg: rgba(239, 68, 68, 0.15);
+  --critical-text: #F87171;
+  --info: #38BDF8;
+  --info-bg: rgba(56, 189, 248, 0.15);
+  --info-text: #7DD3FC;
+  --chart-grid: #243044;
+  --chart-text: #94A3B8;
+  --input-bg: #0D131D;
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.4);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5);
+  --glass-bg: rgba(13, 19, 29, 0.85);
+  --scroll-track: #0A1019;
+  --scroll-thumb: #1E293B;
+  --scroll-thumb-hover: #334155;
+}
+
+@layer base {
+  html, body, #root {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--text-primary);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    transition: background-color 250ms ease, color 250ms ease;
+  }
+
+  /* Smooth 200-300ms transition for interactive components */
+  header, aside, main, div, button, input, select, table, th, td {
+    transition: background-color 250ms ease, border-color 250ms ease, color 250ms ease, box-shadow 250ms ease;
+  }
+
+  /* Clear contrast for input placeholders */
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--text-muted);
+    opacity: 1;
+  }
+
+  /* Accessible contrast for disabled buttons/inputs */
+  button:disabled,
+  input:disabled,
+  select:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+/* Custom sleek scrollbar for industrial UI */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scroll-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scroll-thumb-hover);
+}
+
+/* Pulse effects for telemetry indicators */
+@keyframes pulse-amber {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.15); }
+}
+
+@keyframes pulse-red {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+.animate-pulse-amber {
+  animation: pulse-amber 1.8s infinite ease-in-out;
+}
+
+.animate-pulse-red {
+  animation: pulse-red 1.2s infinite ease-in-out;
+}
+
+/* Grid background texture */
+.bg-grid-pattern {
+  background-image: radial-gradient(rgba(100, 116, 139, 0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
