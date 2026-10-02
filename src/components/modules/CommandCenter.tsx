@@ -204,7 +204,7 @@ export const CommandCenter: React.FC = () => {
                 />
                 {hasIssues ? 'Attention Required' : 'Operational'}
               </span>
-              <span className="text-xs text-slate-500 dark:text-slate-400">
+              <span className="text-xs text-slate-700 dark:text-slate-400 font-medium">
                 — {hasIssues
                   ? 'Line 2 Lathe M-004 has abnormal vibration; 2 customer orders have delivery risk.'
                   : 'All machines nominal and orders on track.'}
@@ -260,10 +260,20 @@ export const CommandCenter: React.FC = () => {
                     Priority Action
                   </span>
                 </div>
-                <p className="text-xs text-amber-900 dark:text-amber-100/90 leading-relaxed max-w-3xl">
+                <p
+                  className="text-xs leading-relaxed max-w-3xl font-medium"
+                  style={{
+                    color: isDark ? '#FEF3C7' : '#78350F',
+                  }}
+                >
                   Vibration is above the prototype threshold (<strong>4.85 mm/s</strong> vs <strong>4.0 mm/s</strong> limit). If unaddressed, bearing wear risks spindle seizure and will delay <strong>2 customer orders (₹2,45,000 value)</strong> by 5.5 hours.
                 </p>
-                <div className="text-[11px] text-amber-800 dark:text-amber-300/80 font-medium pt-0.5">
+                <div
+                  className="text-[11px] font-medium pt-0.5"
+                  style={{
+                    color: isDark ? '#FCD34D' : '#92400E',
+                  }}
+                >
                   Core Principle: <em>Show what matters → Explain why → Suggest what to do</em>
                 </div>
               </div>
@@ -340,10 +350,10 @@ export const CommandCenter: React.FC = () => {
       {/* ============================================================== */}
       <div>
         <div className="flex items-center justify-between pb-2 mb-2">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-400">
             Factory Vital Signs
           </h2>
-          <span className="text-[11px] text-slate-400">Click any card to inspect module</span>
+          <span className="text-[11px] text-slate-700 dark:text-slate-400 font-medium">Click any card to inspect module</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
@@ -417,7 +427,7 @@ export const CommandCenter: React.FC = () => {
       {/* ============================================================== */}
       <div>
         <div className="flex items-center justify-between pb-2 mb-2">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-400">
             Level 2: Active Production & Resource Flow
           </h2>
         </div>

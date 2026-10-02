@@ -108,18 +108,24 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
     matchedSuppliers.length;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 flex items-start justify-center p-4 pt-16 sm:pt-20 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 bg-black/70 flex items-start justify-center p-4 pt-16 sm:pt-20 backdrop-blur-sm">
       <div
         className="border rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden flex flex-col max-h-[80vh]"
         style={{
-          backgroundColor: 'var(--card)',
-          borderColor: 'var(--border)',
-          color: 'var(--text-primary)',
+          backgroundColor: '#141D2A',
+          borderColor: '#243044',
+          color: '#F8FAFC',
         }}
       >
-        {/* Search Input Bar */}
-        <div className="flex items-center px-4 py-3.5 border-b gap-3" style={{ borderColor: 'var(--border)' }}>
-          <Search className="h-5 w-5 text-blue-600 dark:text-cyan-400 shrink-0" />
+        {/* Search Input Bar (Fixed Header) */}
+        <div
+          className="flex items-center px-4 py-3.5 border-b gap-3 shrink-0"
+          style={{
+            borderColor: '#243044',
+            backgroundColor: '#141D2A',
+          }}
+        >
+          <Search className="h-5 w-5 shrink-0" style={{ color: '#22D3EE' }} />
           <input
             ref={inputRef}
             type="text"
@@ -127,38 +133,40 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="w-full bg-transparent text-sm focus:outline-none placeholder-slate-400 font-medium"
-            style={{ color: 'var(--text-primary)' }}
+            style={{ color: '#F8FAFC' }}
           />
           {query && (
             <button
               onClick={() => setQuery('')}
-              className="text-xs px-1.5 py-0.5 rounded hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-400 cursor-pointer"
+              className="text-xs px-1.5 py-0.5 rounded hover:bg-slate-800 font-semibold cursor-pointer transition-colors"
+              style={{ color: '#94A3B8' }}
             >
               Clear
             </button>
           )}
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-slate-400 hover:text-slate-200 cursor-pointer"
+            className="p-1 rounded-lg hover:bg-slate-800 cursor-pointer transition-colors"
+            style={{ color: '#94A3B8' }}
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        {/* Results List */}
-        <div className="p-4 overflow-y-auto space-y-4 flex-1 text-xs">
+        {/* Results List (Scrollable) */}
+        <div className="p-4 overflow-y-auto space-y-4 flex-1 min-h-0 text-xs">
           {totalResults === 0 ? (
-            <div className="text-center py-8 text-slate-400">
-              <Search className="h-8 w-8 mx-auto mb-2 opacity-40" />
-              <p className="font-semibold">No results found for "{query}"</p>
-              <p className="text-[11px] mt-1">Try searching for M-004, ORDER-1042, Marcus, or SP-104</p>
+            <div className="text-center py-8" style={{ color: '#94A3B8' }}>
+              <Search className="h-8 w-8 mx-auto mb-2 opacity-40" style={{ color: '#64748B' }} />
+              <p className="font-semibold" style={{ color: '#E2E8F0' }}>No results found for "{query}"</p>
+              <p className="text-[11px] mt-1" style={{ color: '#94A3B8' }}>Try searching for M-004, ORDER-1042, Marcus, or SP-104</p>
             </div>
           ) : (
             <>
               {/* MACHINES */}
               {matchedMachines.length > 0 && (
                 <div>
-                  <div className="text-[10px] font-bold uppercase tracking-wider mb-1.5 flex items-center gap-1.5 text-blue-600 dark:text-cyan-400">
+                  <div className="text-[10px] font-bold uppercase tracking-wider mb-1.5 flex items-center gap-1.5" style={{ color: '#22D3EE' }}>
                     <Cpu className="h-3.5 w-3.5" />
                     <span>Machines ({matchedMachines.length})</span>
                   </div>
@@ -171,27 +179,28 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
                           setActiveTab('machines');
                           onClose();
                         }}
-                        className="w-full text-left p-2 rounded-lg border transition-colors flex items-center justify-between cursor-pointer hover:border-blue-400"
+                        className="w-full text-left p-2 rounded-lg border transition-colors flex items-center justify-between cursor-pointer hover:border-cyan-500/50 hover:bg-[#162235]"
                         style={{
-                          backgroundColor: 'var(--surface-secondary)',
-                          borderColor: 'var(--border)',
+                          backgroundColor: '#111927',
+                          borderColor: '#243044',
                         }}
                       >
                         <div className="flex items-center gap-2">
-                          <span className="font-bold text-slate-900 dark:text-slate-100">{m.id}</span>
-                          <span className="text-slate-600 dark:text-slate-400 truncate max-w-xs font-medium">{m.name}</span>
+                          <span className="font-bold" style={{ color: '#F8FAFC' }}>{m.id}</span>
+                          <span className="truncate max-w-xs font-medium" style={{ color: '#94A3B8' }}>{m.name}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <span
-                            className={`text-[10px] font-bold uppercase px-1.5 py-0.5 rounded ${
+                            className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded border"
+                            style={
                               m.status === 'running'
-                                ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-400'
-                                : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-400'
-                            }`}
+                                ? { backgroundColor: 'rgba(6, 78, 59, 0.6)', color: '#34D399', borderColor: 'rgba(16, 185, 129, 0.3)' }
+                                : { backgroundColor: 'rgba(120, 53, 15, 0.6)', color: '#FBBF24', borderColor: 'rgba(245, 158, 11, 0.3)' }
+                            }
                           >
                             {m.status}
                           </span>
-                          <ArrowRight className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
+                          <ArrowRight className="h-3.5 w-3.5" style={{ color: '#64748B' }} />
                         </div>
                       </button>
                     ))}
@@ -202,7 +211,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
               {/* ORDERS */}
               {matchedOrders.length > 0 && (
                 <div>
-                  <div className="text-[10px] font-bold uppercase tracking-wider mb-1.5 flex items-center gap-1.5 text-emerald-700 dark:text-emerald-400">
+                  <div className="text-[10px] font-bold uppercase tracking-wider mb-1.5 flex items-center gap-1.5" style={{ color: '#34D399' }}>
                     <Layers className="h-3.5 w-3.5" />
                     <span>Orders ({matchedOrders.length})</span>
                   </div>
@@ -215,28 +224,29 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
                           setActiveTab('orders');
                           onClose();
                         }}
-                        className="w-full text-left p-2 rounded-lg border transition-colors flex items-center justify-between cursor-pointer hover:border-blue-400"
+                        className="w-full text-left p-2 rounded-lg border transition-colors flex items-center justify-between cursor-pointer hover:border-cyan-500/50 hover:bg-[#162235]"
                         style={{
-                          backgroundColor: 'var(--surface-secondary)',
-                          borderColor: 'var(--border)',
+                          backgroundColor: '#111927',
+                          borderColor: '#243044',
                         }}
                       >
                         <div>
-                          <span className="font-bold text-slate-900 dark:text-slate-100">{o.id}</span>
-                          <span className="text-slate-600 dark:text-slate-400 ml-2 font-medium">{o.customer}</span>
-                          <span className="text-[10px] text-slate-700 dark:text-slate-400 block truncate">{o.product}</span>
+                          <span className="font-bold" style={{ color: '#F8FAFC' }}>{o.id}</span>
+                          <span className="ml-2 font-medium" style={{ color: '#94A3B8' }}>{o.customer}</span>
+                          <span className="text-[10px] block truncate" style={{ color: '#64748B' }}>{o.product}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <span
-                            className={`text-[10px] font-bold uppercase px-1.5 py-0.5 rounded ${
+                            className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded border"
+                            style={
                               o.deliveryRisk === 'high'
-                                ? 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300'
-                                : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-400'
-                            }`}
+                                ? { backgroundColor: 'rgba(136, 19, 55, 0.6)', color: '#FDA4AF', borderColor: 'rgba(244, 63, 94, 0.3)' }
+                                : { backgroundColor: 'rgba(6, 78, 59, 0.6)', color: '#34D399', borderColor: 'rgba(16, 185, 129, 0.3)' }
+                            }
                           >
                             {o.deliveryRisk} Risk
                           </span>
-                          <ArrowRight className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
+                          <ArrowRight className="h-3.5 w-3.5" style={{ color: '#64748B' }} />
                         </div>
                       </button>
                     ))}
@@ -247,7 +257,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
               {/* EMPLOYEES */}
               {matchedEmployees.length > 0 && (
                 <div>
-                  <div className="text-[10px] font-bold uppercase tracking-wider mb-1.5 flex items-center gap-1.5 text-indigo-600 dark:text-indigo-400">
+                  <div className="text-[10px] font-bold uppercase tracking-wider mb-1.5 flex items-center gap-1.5" style={{ color: '#818CF8' }}>
                     <Users className="h-3.5 w-3.5" />
                     <span>Employees & Technicians ({matchedEmployees.length})</span>
                   </div>
@@ -259,17 +269,28 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
                           setActiveTab('workforce');
                           onClose();
                         }}
-                        className="w-full text-left p-2 rounded-lg border transition-colors flex items-center justify-between cursor-pointer hover:border-blue-400"
+                        className="w-full text-left p-2 rounded-lg border transition-colors flex items-center justify-between cursor-pointer hover:border-cyan-500/50 hover:bg-[#162235]"
                         style={{
-                          backgroundColor: 'var(--surface-secondary)',
-                          borderColor: 'var(--border)',
+                          backgroundColor: '#111927',
+                          borderColor: '#243044',
                         }}
                       >
                         <div>
-                          <span className="font-bold text-slate-900 dark:text-slate-100">{e.name}</span>
-                          <span className="text-slate-600 dark:text-slate-400 ml-2 font-medium">({e.role})</span>
+                          <span className="font-bold" style={{ color: '#F8FAFC' }}>
+                            {e.name || (e as any).fullName || (e as any).employeeName || e.id}
+                          </span>
+                          <span className="ml-2 font-medium" style={{ color: '#94A3B8' }}>
+                            ({e.role})
+                          </span>
                         </div>
-                        <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+                        <span
+                          className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded border"
+                          style={{
+                            backgroundColor: '#1E293B',
+                            color: '#CBD5E1',
+                            borderColor: '#334155',
+                          }}
+                        >
                           {e.availability}
                         </span>
                       </button>
@@ -281,7 +302,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
               {/* WORK ORDERS */}
               {matchedWOs.length > 0 && (
                 <div>
-                  <div className="text-[10px] font-bold uppercase tracking-wider mb-1.5 flex items-center gap-1.5 text-amber-600 dark:text-amber-400">
+                  <div className="text-[10px] font-bold uppercase tracking-wider mb-1.5 flex items-center gap-1.5" style={{ color: '#FBBF24' }}>
                     <Wrench className="h-3.5 w-3.5" />
                     <span>Maintenance Work Orders ({matchedWOs.length})</span>
                   </div>
@@ -293,18 +314,25 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
                           setActiveTab('maintenance');
                           onClose();
                         }}
-                        className="w-full text-left p-2 rounded-lg border transition-colors flex items-center justify-between cursor-pointer hover:border-blue-400"
+                        className="w-full text-left p-2 rounded-lg border transition-colors flex items-center justify-between cursor-pointer hover:border-cyan-500/50 hover:bg-[#162235]"
                         style={{
-                          backgroundColor: 'var(--surface-secondary)',
-                          borderColor: 'var(--border)',
+                          backgroundColor: '#111927',
+                          borderColor: '#243044',
                         }}
                       >
                         <div>
-                          <span className="font-bold text-slate-900 dark:text-slate-100">{w.id}</span>
-                          <span className="text-slate-600 dark:text-slate-400 ml-2 font-medium">{w.machineId}</span>
-                          <span className="text-[10px] text-slate-700 dark:text-slate-400 block truncate">{w.issue}</span>
+                          <span className="font-bold" style={{ color: '#F8FAFC' }}>{w.id}</span>
+                          <span className="ml-2 font-medium" style={{ color: '#94A3B8' }}>{w.machineId}</span>
+                          <span className="text-[10px] block truncate" style={{ color: '#64748B' }}>{w.issue}</span>
                         </div>
-                        <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-400">
+                        <span
+                          className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded border"
+                          style={{
+                            backgroundColor: 'rgba(120, 53, 15, 0.6)',
+                            color: '#FBBF24',
+                            borderColor: 'rgba(245, 158, 11, 0.3)',
+                          }}
+                        >
                           {w.status}
                         </span>
                       </button>
@@ -316,7 +344,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
               {/* INVENTORY */}
               {matchedInventory.length > 0 && (
                 <div>
-                  <div className="text-[10px] font-bold uppercase tracking-wider mb-1.5 flex items-center gap-1.5 text-cyan-600 dark:text-cyan-400">
+                  <div className="text-[10px] font-bold uppercase tracking-wider mb-1.5 flex items-center gap-1.5" style={{ color: '#22D3EE' }}>
                     <Boxes className="h-3.5 w-3.5" />
                     <span>Inventory & Spare Parts ({matchedInventory.length})</span>
                   </div>
@@ -328,17 +356,17 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
                           setActiveTab('inventory');
                           onClose();
                         }}
-                        className="w-full text-left p-2 rounded-lg border transition-colors flex items-center justify-between cursor-pointer hover:border-blue-400"
+                        className="w-full text-left p-2 rounded-lg border transition-colors flex items-center justify-between cursor-pointer hover:border-cyan-500/50 hover:bg-[#162235]"
                         style={{
-                          backgroundColor: 'var(--surface-secondary)',
-                          borderColor: 'var(--border)',
+                          backgroundColor: '#111927',
+                          borderColor: '#243044',
                         }}
                       >
                         <div>
-                          <span className="font-bold text-slate-900 dark:text-slate-100">{i.id}</span>
-                          <span className="text-slate-600 dark:text-slate-400 ml-2 font-medium">{i.name}</span>
+                          <span className="font-bold" style={{ color: '#F8FAFC' }}>{i.id}</span>
+                          <span className="ml-2 font-medium" style={{ color: '#94A3B8' }}>{i.name}</span>
                         </div>
-                        <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                        <span className="font-mono font-bold" style={{ color: '#34D399' }}>
                           {i.available} available
                         </span>
                       </button>
@@ -350,17 +378,17 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
           )}
         </div>
 
-        {/* Footer shortcuts */}
+        {/* Footer shortcuts (Fixed Footer) */}
         <div
-          className="px-4 py-2 border-t text-[11px] flex items-center justify-between"
+          className="px-4 py-2 border-t text-[11px] flex items-center justify-between shrink-0"
           style={{
-            backgroundColor: 'var(--surface-secondary)',
-            borderColor: 'var(--border)',
-            color: 'var(--text-secondary)',
+            backgroundColor: '#111927',
+            borderColor: '#243044',
+            color: '#94A3B8',
           }}
         >
-          <span>Use <strong>ESC</strong> to close</span>
-          <span>Tip: Press <strong>⌘K</strong> or <strong>Ctrl+K</strong> anywhere</span>
+          <span>Use <strong style={{ color: '#E2E8F0' }}>ESC</strong> to close</span>
+          <span>Tip: Press <strong style={{ color: '#E2E8F0' }}>⌘K</strong> or <strong style={{ color: '#E2E8F0' }}>Ctrl+K</strong> anywhere</span>
         </div>
       </div>
     </div>

@@ -232,10 +232,12 @@ export const Inventory: React.FC = () => {
                 return (
                   <tr
                     key={item.id}
-                    className="hover:bg-slate-50 dark:hover:bg-slate-850 transition-colors"
+                    className={`transition-colors ${
+                      isDark ? 'hover:bg-slate-800/50' : 'hover:bg-slate-50'
+                    }`}
                   >
                     <td className="py-3 px-4">
-                      <div className="font-bold" style={{ color: 'var(--text-primary)' }}>{item.id}</div>
+                      <div className="font-bold" style={{ color: 'var(--text-primary)' }}>{(item as any).sku || item.id || '—'}</div>
                       <div className="text-[11px] max-w-xs truncate" style={{ color: 'var(--text-secondary)' }}>{item.name}</div>
                     </td>
                     <td className="py-3 px-4 capitalize whitespace-nowrap" style={{ color: 'var(--text-secondary)' }}>
